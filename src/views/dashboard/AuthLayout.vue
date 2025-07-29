@@ -1,8 +1,7 @@
-<script>
+<script setup>
 import Footer from '@/components/Dashboard/Footer.vue';
 import Header from '@/components/Dashboard/Header.vue';
 import Sidebar from '@/components/Dashboard/Sidebar.vue';
-import Dashboard from './Dashboard.vue';
 
 </script>
 
@@ -10,9 +9,9 @@ import Dashboard from './Dashboard.vue';
     <Header />
     <div class="flex">
         <Sidebar />
-        <div class="">
-            <Dashboard/>
-        </div>
+        <main class="m-5 p-5 border-gray border-[1px] rounded-sm w-full">
+            <slot />
+        </main>
     </div>
     <Footer />
 </template>

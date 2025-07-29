@@ -1,5 +1,10 @@
+<script setup lang="ts">
+import AuthLayout from './AuthLayout.vue';
+
+</script>
+
 <template>
-    <main class="m-5 p-5 border-gray border-[1px] rounded-sm w-full">
+    <AuthLayout>
         <span class="bread-crumps p-3 rounded "> \ Home </span>
         <hr class="m-3">
         <h1 class="font-bold text-4xl">Dashboard</h1>
@@ -13,5 +18,5 @@
                 <div class="title text-2xl mt-2">Impacts</div>
             </div>
         </div>
-    </main>
+    </AuthLayout>
 </template>
