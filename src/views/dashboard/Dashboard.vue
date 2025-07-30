@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import AuthLayout from './AuthLayout.vue';
 
 </script>
