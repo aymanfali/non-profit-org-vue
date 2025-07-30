@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import AuthLayout from './AuthLayout.vue';
+
+</script>
+
 <template>
-    <h1 class="text-3xl">Impacts</h1>
+    <AuthLayout>
+        <h1 class="text-3xl">Impacts</h1>
+    </AuthLayout>
 </template>
