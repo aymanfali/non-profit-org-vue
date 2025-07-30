@@ -8,11 +8,11 @@ import Contact from "@/views/Contact.vue";
 import About from "@/views/About.vue";
 
 import Dashboard from "@/views/dashboard/Dashboard.vue";
-import AdminNews from "@/views/dashboard/News.vue";
+import AdminNews from "@/views/dashboard/news/Index.vue";
+import AdminImpacts from "@/views/dashboard/impacts/Index.vue";
 import AdminAbout from "@/views/dashboard/About.vue";
 import AdminContacts from "@/views/dashboard/Contact.vue";
 import AdminSettings from "@/views/dashboard/Settings.vue";
-import Index from "@/views/dashboard/impacts/Index.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,7 +40,7 @@ const router = createRouter({
       children: [
         { path: "/dashboard/", component: Dashboard },
         { path: "/dashboard/news", component: AdminNews },
-        { path: "/dashboard/impacts", component: Index },
+        { path: "/dashboard/impacts", component: AdminImpacts },
         { path: "/dashboard/contacts", component: AdminContacts },
         { path: "/dashboard/about", component: AdminAbout },
         { path: "/dashboard/settings", component: AdminSettings },
