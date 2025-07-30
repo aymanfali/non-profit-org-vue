@@ -1,3 +1,8 @@
+<script>
+import { RouterLink } from 'vue-router'
+
+</script>
+
 <template>
     <nav
         class="dash-nav hidden md:block bg-primary  z-[1000] shadow-2xl md:shadow-none absolute md:relative w-3xs flex-col justify-between h-full">
@@ -13,7 +18,7 @@
                 <RouterLink class="text-text-sec no-underline w-full  px-7 py-4" to="/dashboard/news">News</RouterLink>
             </li>
             <li class="flex items-center relative">
-                <RouterLink class="text-text-sec no-underline w-full  px-7 py-4" to="/dashboard/contact">Contact
+                <RouterLink class="text-text-sec no-underline w-full  px-7 py-4" to="/dashboard/contacts">Contact
                     Us</RouterLink>
             </li>
             <li class="flex items-center relative">

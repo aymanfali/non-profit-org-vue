@@ -9,7 +9,7 @@ import Sidebar from '@/components/Dashboard/Sidebar.vue';
     <Header />
     <div class="flex">
         <Sidebar />
-        <main class="m-5 p-5 border-gray border-[1px] rounded-sm w-full">
+        <main class="m-5 p-5 border-gray border-[1px] rounded-sm w-full text-text-main">
             <slot />
         </main>
     </div>

@@ -11,7 +11,7 @@ import AuthLayout from "@/views/dashboard/AuthLayout.vue";
 import Dashboard from "@/views/dashboard/Dashboard.vue";
 import AdminNews from "@/views/dashboard/News.vue";
 import AdminImpacts from "@/views/dashboard/Impacts.vue";
-import AdminAbout from "@/views/dashboard/AdminAbout.vue";
+import AdminAbout from "@/views/dashboard/About.vue";
 import AdminContacts from "@/views/dashboard/Contact.vue";
 import AdminSettings from "@/views/dashboard/Settings.vue";
 
@@ -38,14 +38,13 @@ const router = createRouter({
 
     {
       path: "/dashboard",
-      component: AuthLayout,
       children: [
-        { path: "/", component: Dashboard },
-        { path: "/news", component: AdminNews },
-        { path: "/impacts", component: AdminImpacts },
-        { path: "/contacts", component: AdminContacts },
-        { path: "/about", component: AdminAbout },
-        { path: "/settings", component: AdminSettings },
+        { path: "/dashboard/", component: Dashboard },
+        { path: "/dashboard/news", component: AdminNews },
+        { path: "/dashboard/impacts", component: AdminImpacts },
+        { path: "/dashboard/contacts", component: AdminContacts },
+        { path: "/dashboard/about", component: AdminAbout },
+        { path: "/dashboard/settings", component: AdminSettings },
       ],
     },
   ],
