@@ -5,7 +5,6 @@ import PrimaryBtn from '@/components/Dashboard/Buttons/PrimaryBtn.vue';
 import Create from './Create.vue';
 import Edit from './Edit.vue';
 import View from './View.vue';
-// import { useToast } from '@/composables/useToast';
 
 export default {
     components: {
@@ -16,10 +15,6 @@ export default {
         Edit,
         View
     },
-    // setup() {
-    //     const toast = useToast();
-    //     return { toast };
-    // },
     data() {
         return {
             impacts: [],
@@ -104,10 +99,8 @@ export default {
         closeView() {
             this.viewingImpact = null;
         },
-        showConfirmDialog(title, message, type) {
+        showConfirmDialog(message) {
             return new Promise((resolve) => {
-                // Implementation would use your ConfirmDialog component
-                // Simplified for example
                 const confirmed = window.confirm(message);
                 resolve(confirmed);
             });

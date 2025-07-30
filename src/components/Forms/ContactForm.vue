@@ -13,12 +13,20 @@ export default {
                 email: '',
                 subject: '',
                 message: ''
-            }
+            },
+            allSubmissions: [] // Stores all submitted messages
         }
     },
     computed: {
         isFormValid() {
             return Object.values(this.errors).every(error => error === '')
+        }
+    },
+    mounted() {
+        // Load previously saved submissions from localStorage
+        const savedSubmissions = localStorage.getItem('contactFormSubmissions');
+        if (savedSubmissions) {
+            this.allSubmissions = JSON.parse(savedSubmissions);
         }
     },
     methods: {
@@ -46,9 +54,6 @@ export default {
             }
             return "";
         },
-        showError(field, error) {
-            this.errors[field] = error;
-        },
         handleInput(field) {
             if (field === 'name') {
                 this.errors.name = this.validateName(this.formData.name);
@@ -71,7 +76,21 @@ export default {
             }
 
             if (confirm(`Your message about "${this.formData.subject}" will be sent to ${this.formData.email}`)) {
+                // Add current submission to allSubmissions array
+                const submission = {
+                    ...this.formData,
+                    date: new Date().toISOString() // Add timestamp
+                };
+                this.allSubmissions.push(submission);
+
+                // Save updated submissions to localStorage
+                localStorage.setItem(
+                    'contactFormSubmissions',
+                    JSON.stringify(this.allSubmissions)
+                );
+
                 alert("Your message was sent successfully!");
+
                 // Reset form
                 this.formData = {
                     name: '',
@@ -87,6 +106,13 @@ export default {
                 };
             } else {
                 alert("Message sending canceled");
+            }
+        },
+        // Optional: Method to clear all submissions (for dashboard use)
+        clearAllSubmissions() {
+            if (confirm("Are you sure you want to delete ALL saved messages?")) {
+                this.allSubmissions = [];
+                localStorage.removeItem('contactFormSubmissions');
             }
         }
     }
