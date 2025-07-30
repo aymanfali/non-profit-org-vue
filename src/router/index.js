@@ -11,7 +11,7 @@ import Dashboard from "@/views/dashboard/Dashboard.vue";
 import AdminNews from "@/views/dashboard/news/Index.vue";
 import AdminImpacts from "@/views/dashboard/impacts/Index.vue";
 import AdminAbout from "@/views/dashboard/About.vue";
-import AdminContacts from "@/views/dashboard/Contact.vue";
+import AdminContacts from "@/views/dashboard/contacts/Index.vue";
 import AdminSettings from "@/views/dashboard/Settings.vue";
 
 const router = createRouter({
