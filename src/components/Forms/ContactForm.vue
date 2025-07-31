@@ -1,5 +1,11 @@
 <script>
+import { useToast } from "vue-toastification";
+
 export default {
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     data() {
         return {
             formData: {
@@ -71,12 +77,11 @@ export default {
             this.errors.message = this.validateField(this.formData.message, 'message');
 
             if (!this.isFormValid) {
-                alert("Please fix the errors in the form");
+                this.toast.error("Please fix the errors in the form");
                 return;
             }
 
-            if (confirm(`Your message about "${this.formData.subject}" will be sent to ${this.formData.email}`)) {
-                // Add current submission to allSubmissions array
+            try {
                 const submission = {
                     ...this.formData,
                     date: new Date().toISOString() // Add timestamp
@@ -89,7 +94,7 @@ export default {
                     JSON.stringify(this.allSubmissions)
                 );
 
-                alert("Your message was sent successfully!");
+                this.toast.success("Your message was sent successfully!");
 
                 // Reset form
                 this.formData = {
@@ -104,11 +109,10 @@ export default {
                     subject: '',
                     message: ''
                 };
-            } else {
-                alert("Message sending canceled");
+            } catch (error) {
+                this.toast.error("An error occurred while processing your request");
             }
         },
-        // Optional: Method to clear all submissions (for dashboard use)
         clearAllSubmissions() {
             if (confirm("Are you sure you want to delete ALL saved messages?")) {
                 this.allSubmissions = [];

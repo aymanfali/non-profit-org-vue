@@ -5,16 +5,22 @@ import PrimaryBtn from '@/components/Dashboard/Buttons/PrimaryBtn.vue';
 import Create from './Create.vue';
 import Edit from './Edit.vue';
 import View from './View.vue';
-// import { useToast } from '@/composables/useToast';
+import { useToast } from 'vue-toastification';
+import { defineAsyncComponent } from 'vue';
 
 export default {
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     components: {
         Table,
         AuthLayout,
         PrimaryBtn,
         Create,
         Edit,
-        View
+        View,
+        ConfirmModal: defineAsyncComponent(() => import('@/components/Dashboard/ConfirmModal.vue'))
     },
     data() {
         return {
@@ -26,7 +32,16 @@ export default {
                 image: '',
                 date: ''
             },
-            viewingNews: null
+            viewingNews: null,
+
+            showConfirmModal: false,
+            confirmModalConfig: {
+                title: '',
+                message: '',
+                confirmText: 'Confirm',
+                cancelText: 'Cancel'
+            },
+            NewsToDelete: null
         }
     },
     created() {
@@ -51,22 +66,30 @@ export default {
             this.showEditForm = true;
             this.showCreateForm = false;
         },
-        async handleDelete(news) {
-            try {
-                const confirmed = await this.showConfirmDialog(
-                    'Delete News',
-                    'Are you sure you want to delete this news?',
-                    'error'
-                );
-
-                if (confirmed) {
-                    this.news = this.news.filter(i => i.title !== news.title);
-                    this.saveNews();
-                    // this.toast.addToast('News deleted successfully', 'success');
-                }
-            } catch (error) {
-                // this.toast.addToast('Failed to delete news', 'error');
+        handleDelete(news) {
+            this.NewsToDelete = news
+            this.showConfirmModal = true
+            this.confirmModalConfig = {
+                title: 'Delete News',
+                message: 'Are you sure you want to delete this News?',
+                confirmText: 'Delete',
+                cancelText: 'Cancel'
             }
+        },
+        handleConfirm() {
+            try {
+                this.news = this.news.filter(i => i.title !== this.NewsToDelete.title);
+                this.saveNews();
+                this.toast.success('News deleted successfully');
+                this.showConfirmModal = false;
+                this.NewsToDelete = null;
+            } catch (error) {
+                this.toast.error('Failed to delete News');
+            }
+        },
+        handleCancel() {
+            this.showConfirmModal = false;
+            this.NewsToDelete = null;
         },
         viewDetails(news) {
             this.viewingNews = { ...news };
@@ -76,9 +99,9 @@ export default {
                 this.news.unshift(news);
                 this.saveNews();
                 this.showCreateForm = false;
-                this.toast.addToast('News created successfully', 'success');
+                this.toast.success('News created successfully');
             } catch (error) {
-                // this.toast.addToast('Failed to create news', 'error');
+                this.toast.error('Failed to create news');
             }
         },
         handleUpdate(news) {
@@ -89,9 +112,9 @@ export default {
                 }
                 this.saveNews();
                 this.showEditForm = false;
-                this.toast.addToast('News updated successfully', 'success');
+                this.toast.success('News updated successfully');
             } catch (error) {
-                // this.toast.addToast('Failed to update news', 'error');
+                this.toast.error('Failed to update news');
             }
         },
         closeForms() {
@@ -101,10 +124,8 @@ export default {
         closeView() {
             this.viewingNews = null;
         },
-        showConfirmDialog(title, message, type) {
+        showConfirmDialog(message) {
             return new Promise((resolve) => {
-                // Implementation would use your ConfirmDialog component
-                // Simplified for example
                 const confirmed = window.confirm(message);
                 resolve(confirmed);
             });
@@ -115,8 +136,6 @@ export default {
 
 <template>
     <AuthLayout>
-        <!-- <Toast /> -->
-
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold mb-6">News</h1>
             <PrimaryBtn name="Add News" @click="handleAdd" />
@@ -130,5 +149,9 @@ export default {
             @view="viewDetails" />
 
         <View v-if="viewingNews" :news="viewingNews" @close="closeView" />
+
+        <ConfirmModal :show="showConfirmModal" :title="confirmModalConfig.title" :message="confirmModalConfig.message"
+            :confirmText="confirmModalConfig.confirmText" :cancelText="confirmModalConfig.cancelText"
+            @confirm="handleConfirm" @cancel="handleCancel" />
     </AuthLayout>
 </template>

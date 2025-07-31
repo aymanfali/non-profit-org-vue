@@ -3,13 +3,20 @@ import Table from '@/components/Dashboard/Table.vue';
 import AuthLayout from '../AuthLayout.vue';
 import PrimaryBtn from '@/components/Dashboard/Buttons/PrimaryBtn.vue';
 import View from './View.vue';
+import { useToast } from 'vue-toastification';
+import { defineAsyncComponent } from 'vue';
 
 export default {
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     components: {
         Table,
         AuthLayout,
         PrimaryBtn,
         View,
+        ConfirmModal: defineAsyncComponent(() => import('@/components/Dashboard/ConfirmModal.vue'))
     },
     data() {
         return {
@@ -21,7 +28,15 @@ export default {
                 message: '',
                 date: ''
             },
-            viewingContact: null
+            viewingContact: null,
+            showConfirmModal: false,
+            confirmModalConfig: {
+                title: '',
+                message: '',
+                confirmText: 'Confirm',
+                cancelText: 'Cancel'
+            },
+            contactToDelete: null
         }
     },
     created() {
@@ -46,34 +61,38 @@ export default {
         saveContacts() {
             localStorage.setItem('contactFormSubmissions', JSON.stringify(this.contacts));
         },
-        async handleDelete(contact) {
+        handleDelete(contact) {
+            this.contactToDelete = contact;
+            this.showConfirmModal = true;
+            this.confirmModalConfig = {
+                title: 'Delete contact',
+                message: 'Are you sure you want to delete this contact?',
+                confirmText: 'Delete',
+                cancelText: 'Cancel'
+            };
+        },
+        handleConfirm() {
             try {
-                const confirmed = await this.showConfirmDialog(
-                    'Delete Contact',
-                    'Are you sure you want to delete this contact submission?',
-                    'error'
-                );
-
-                if (confirmed) {
-                    this.contacts = this.contacts.filter(c => c.id !== contact.id);
+                    this.contacts = this.contacts.filter(c => c.id !== this.contactToDelete.id);
                     this.saveContacts();
-                    this.toast.addToast('Contact deleted successfully', 'success');
-                }
+                this.toast.success('Contact deleted successfully');
+
+                this.showConfirmModal = false;
+                this.contactToDelete = null;
             } catch (error) {
-                // this.toast.addToast('Failed to delete contact', 'error');
+                this.toast.error('Failed to delete contact');
             }
+        },
+
+        handleCancel() {
+            this.showConfirmModal = false;
+            this.contactToDelete = null;
         },
         viewDetails(contact) {
             this.viewingContact = { ...contact };
         },
         closeView() {
             this.viewingContact = null;
-        },
-        showConfirmDialog(message) {
-            return new Promise((resolve) => {
-                const confirmed = window.confirm(message);
-                resolve(confirmed);
-            });
         }
     }
 }
@@ -89,5 +108,9 @@ export default {
             @delete="handleDelete" @view="viewDetails" />
 
         <View v-if="viewingContact" :contact="viewingContact" @close="closeView" />
+
+        <ConfirmModal :show="showConfirmModal" :title="confirmModalConfig.title" :message="confirmModalConfig.message"
+            :confirmText="confirmModalConfig.confirmText" :cancelText="confirmModalConfig.cancelText"
+            @confirm="handleConfirm" @cancel="handleCancel" />
     </AuthLayout>
 </template>

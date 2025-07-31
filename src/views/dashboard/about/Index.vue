@@ -2,7 +2,9 @@
 import { ref, onMounted } from 'vue'
 import AuthLayout from '../AuthLayout.vue'
 import PrimaryBtn from '@/components/Dashboard/Buttons/PrimaryBtn.vue'
-import DangerBtn from '@/components/Dashboard/Buttons/DangerBtn.vue'
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const formData = ref({
     history: '',
@@ -15,8 +17,7 @@ const handleSubmit = (event) => {
     // Save to localStorage
     localStorage.setItem('aboutFormData', JSON.stringify(formData.value))
 
-    // Optional: Show feedback to user
-    alert('Data saved to localStorage!')
+    toast.success('About data updated successfully');
 }
 
 // Load saved data when component mounts
