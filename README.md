@@ -1,5 +1,13 @@
 # non-profit-org-vue
 
+# website link
+you can find the website hosted on GitHub.io by visiting https://aymanfali.github.io/non-profit-org-vue-live/#/
+
+# dashboard link
+you can find the dashboard hosted on GitHub.io by visiting https://aymanfali.github.io/non-profit-org-vue-live/#/dashboard
+
+<hr>
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
