@@ -16,10 +16,6 @@ export default {
         Edit,
         View
     },
-    // setup() {
-    //     const toast = useToast();
-    //     return { toast };
-    // },
     data() {
         return {
             news: [],

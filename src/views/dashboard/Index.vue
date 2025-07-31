@@ -8,7 +8,7 @@ const impactsCount = ref(0);
 const messagesCount = ref(0);
 
 onMounted(() => {
-    const news = JSON.parse(localStorage.getItem('news') || []);
+    const news = JSON.parse(localStorage.getItem('news') || '[]');
     newsCount.value = news.length;
 
     const impacts = JSON.parse(localStorage.getItem('impacts') || '[]');

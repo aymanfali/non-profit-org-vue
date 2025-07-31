@@ -18,7 +18,7 @@ const app = createApp(App)
 const pinia = createPinia();
 
 app.use(router)
-app.use(pinia);
+app.use(pinia); 
 app.use(Toast, options);
 
 app.component('Header', Header)

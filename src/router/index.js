@@ -10,7 +10,7 @@ import About from "@/views/About.vue";
 import Dashboard from "@/views/dashboard/Index.vue";
 import AdminNews from "@/views/dashboard/news/Index.vue";
 import AdminImpacts from "@/views/dashboard/impacts/Index.vue";
-import AdminAbout from "@/views/dashboard/About.vue";
+import AdminAbout from "@/views/dashboard/about/Index.vue";
 import AdminContacts from "@/views/dashboard/contacts/Index.vue";
 import AdminSettings from "@/views/dashboard/settings/Index.vue";
 
