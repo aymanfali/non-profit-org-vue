@@ -7,12 +7,12 @@ import ImpactDetails from "@/views/ImpactDetails.vue";
 import Contact from "@/views/Contact.vue";
 import About from "@/views/About.vue";
 
-import Dashboard from "@/views/dashboard/Dashboard.vue";
+import Dashboard from "@/views/dashboard/Index.vue";
 import AdminNews from "@/views/dashboard/news/Index.vue";
 import AdminImpacts from "@/views/dashboard/impacts/Index.vue";
 import AdminAbout from "@/views/dashboard/About.vue";
 import AdminContacts from "@/views/dashboard/contacts/Index.vue";
-import AdminSettings from "@/views/dashboard/Settings.vue";
+import AdminSettings from "@/views/dashboard/settings/Index.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
