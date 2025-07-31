@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/Home.vue";
+import Home from "@/views/Index.vue";
 import News from "@/views/News.vue";
 import NewsDetails from "@/views/NewsDetails.vue";
 import Impacts from "@/views/Impacts.vue";
@@ -17,7 +17,7 @@ import AdminSettings from "@/views/dashboard/settings/Index.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", name: "Home", component: Home },
+    { path: "/", name: "Index", component: Home },
     { path: "/news", name: "News", component: News },
     {
       path: "/news/:id",

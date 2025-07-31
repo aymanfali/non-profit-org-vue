@@ -22,7 +22,8 @@ export default {
             showEditForm: false,
             currentImpact: {
                 title: '',
-                image: ''
+                image: '',
+                date: ''
             },
             viewingImpact: null
         }
@@ -122,7 +123,7 @@ export default {
 
         <Edit v-if="showEditForm" :impact="currentImpact" @save="handleUpdate" @cancel="closeForms" />
 
-        <Table :headers="['Title', 'Image']" :items="impacts" @edit="handleEdit" @delete="handleDelete"
+        <Table :headers="['Title', 'Image', 'Date']" :items="impacts" @edit="handleEdit" @delete="handleDelete"
             @view="viewDetails" />
 
         <View v-if="viewingImpact" :impact="viewingImpact" @close="closeView" />

@@ -2,35 +2,23 @@
 export default {
     data() {
         return {
-            items: [
-                {
-                    id: 1,
-                    image: "/public/images/impact_1.jpg",
-                    title:
-                        "Working where it counts: UNESCO leads local initiatives and develops tools to safeguard World Heritage",
-                },
-                {
-                    id: 2,
-                    image: "/public/images/impact_2.jpg",
-                    title:
-                        "Bangkok sets the pace for AI Ethics: Highlights from UNESCO’s 3rd Global Forum on the Ethics of AI",
-                },
-                {
-                    id: 3,
-                    image: "/public/images/adg-ed-thinkpiece-esd_0.jpg",
-                    title:
-                        "Record number of higher education students highlights global need for recognition of qualifications",
-                },
-                {
-                    id: 4,
-                    image: "/public/images/story_whc_mafagascar.JPG.webp",
-                    title:
-                        "Caribbean cuisine transcends borders thanks to UNESCO’s Transcultura programme",
-                },
-            ]
+            items: [],
+            currentImpact: {
+                title: '',
+                image: ''
+            },
         }
     },
+    created() {
+        this.loadImpacts();
+    },
     methods: {
+        loadImpacts() {
+            const savedImpacts = localStorage.getItem('impacts');
+            if (savedImpacts) {
+                this.items = JSON.parse(savedImpacts);
+            }
+        },
         goToImpactDetail(impactId) {
             this.$router.push({ name: 'ImpactDetails', params: { id: impactId } });
         }

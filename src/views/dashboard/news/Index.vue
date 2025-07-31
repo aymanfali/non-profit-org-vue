@@ -23,7 +23,8 @@ export default {
             showEditForm: false,
             currentNews: {
                 title: '',
-                image: ''
+                image: '',
+                date: ''
             },
             viewingNews: null
         }
@@ -125,7 +126,7 @@ export default {
 
         <Edit v-if="showEditForm" :news="currentNews" @save="handleUpdate" @cancel="closeForms" />
 
-        <Table :headers="['Title', 'Image']" :items="news" @edit="handleEdit" @delete="handleDelete"
+        <Table :headers="['Title', 'Image', 'Date']" :items="news" @edit="handleEdit" @delete="handleDelete"
             @view="viewDetails" />
 
         <View v-if="viewingNews" :news="viewingNews" @close="closeView" />
