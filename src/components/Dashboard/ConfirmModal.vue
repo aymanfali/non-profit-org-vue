@@ -18,7 +18,7 @@ const emit = defineEmits(['confirm', 'cancel']);
 
             <div class="flex justify-end space-x-3">
                 <button @click="$emit('cancel')"
-                    class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                    class="px-4 py-2 border border-gray-300 rounded-m focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                     {{ cancelText }}
                 </button>
                 <button @click="$emit('confirm')"
