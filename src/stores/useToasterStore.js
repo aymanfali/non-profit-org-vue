@@ -1,37 +1,21 @@
 import { defineStore } from "pinia";
+import { useToast } from "vue-toastification";
 
-const defaultTimeout = 2000;
+const toast = useToast();
 
-const createToast = (text, status) => ({
-  text,
-  status,
-  id: Math.random() * 1000,
-});
-
-export default defineStore("toaster-store", {
-  state: () => ({
-    toasts: [],
-  }),
+export const useToasterStore = defineStore("toaster-store", {
+  state: {
+    count: 0,
+  },
+  mutations: {
+    increment(state) {
+      state.count++;
+    },
+  },
   actions: {
-    updateState(payload, status) {
-      const { text, timeout } = payload;
-
-      const toast = createToast(text, status);
-
-      this.toasts.push(toast);
-
-      setTimeout(() => {
-        this.toasts = this.toasts.filter((t) => t.id !== toast.id);
-      }, timeout ?? defaultTimeout);
-    },
-    success(payload) {
-      this.updateState(payload, "success");
-    },
-    warning(payload) {
-      this.updateState(payload, "warning");
-    },
-    error(payload) {
-      this.updateState(payload, "error");
+    increment(context) {
+      context.commit("increment");
+      toast.success("incremented!");
     },
   },
 });
