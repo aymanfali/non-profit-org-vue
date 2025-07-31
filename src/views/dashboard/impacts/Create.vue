@@ -4,14 +4,20 @@ export default {
     data() {
         return {
             impact: {
+                id: '',
                 title: '',
+                date: new Date().toISOString().split('T')[0],
                 image: '',
                 content: ''
             }
         }
     },
     methods: {
+        generateUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substring(2);
+        },
         handleSubmit() {
+            this.impact.id = this.generateUniqueId();
             this.$emit('save', { ...this.impact });
         },
         handleCancel() {

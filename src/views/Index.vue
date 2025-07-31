@@ -1,8 +1,6 @@
 <script setup>
 import TheImpacts from '@/components/TheImpacts.vue';
 import GuestLayout from './GuestLayout.vue';
-
-
 </script>
 
 <template>
