@@ -101,15 +101,14 @@ export default {
                 placeholder="What are you looking for?">
         </form>
         <div v-if="isResultListOpen"
-            class="absolute justify-center left-0 w-full top-52 z-50 p-5 my-3 mx-0 bg-bg text-text-main shadow-2xl">
+            class="absolute justify-center left-0 w-full top-52 max-h-96 overflow-y-auto z-50 p-5 my-3 mx-0 bg-bg text-text-main shadow-2xl">
             <div v-if="isLoading" class="p-3 text-center text-gray-500">
                 Searching...
             </div>
             <div v-else-if="searchResults.length > 0" class="search-results">
                 <div v-for="(result, index) in searchResults" :key="index"
                     class="result-item p-3 border-b border-gray-200" @click="navigateToResult(result)">
-                    <div class="result-type text-xs font-semibold mb-1"
-                        :class="{ 'text-blue-500': result.type === 'impact', 'text-green-500': result.type === 'news' }">
+                    <div class="result-type text-xs font-semibold mb-1 border border-bg text-horizontal-line bg-horizontal-line/20 rounded-lg p-1 w-fit">
                         {{ result.type.toUpperCase() }}
                     </div>
                     <div class="result-content">
