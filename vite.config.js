@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/non-profit-org-vue/',
+  base: '/non-profit-org-vue-live/',
   plugins: [vue(), vueDevTools(), tailwindcss()],
   resolve: {
     alias: {

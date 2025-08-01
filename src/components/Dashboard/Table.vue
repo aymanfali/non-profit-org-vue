@@ -16,6 +16,25 @@ export default {
         allowEdit: {
             type: Boolean,
             default: true
+        },
+        itemsPerPage: {
+            type: Number,
+            default: 5
+        }
+    },
+    data() {
+        return {
+            currentPage: 1
+        }
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.items.length / this.itemsPerPage);
+        },
+        paginatedItems() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.items.slice(start, end);
         }
     },
     methods: {
@@ -41,13 +60,28 @@ export default {
                 (value.startsWith('http') ||
                     value.startsWith('/') ||
                     value.startsWith('data:image'));
+        },
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
         }
     }
 }
 </script>
 
 <template>
-    <div class=" rounded-lg shadow overflow-hidden">
+    <div class="rounded-lg shadow overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y">
                 <thead class="">
@@ -63,7 +97,7 @@ export default {
                     </tr>
                 </thead>
                 <tbody class="divide-y ">
-                    <tr v-for="(item, itemIndex) in items" :key="`row-${itemIndex}`">
+                    <tr v-for="(item, itemIndex) in paginatedItems" :key="`row-${itemIndex}`">
                         <template v-for="(header, headerIndex) in headers" :key="`cell-${itemIndex}-${headerIndex}`">
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <template v-if="isImage(item[header.toLowerCase()])">
@@ -110,6 +144,67 @@ export default {
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div class="flex-1 flex justify-between sm:hidden">
+                <button @click="prevPage" 
+                    :disabled="currentPage === 1"
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md"
+                    :class="currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'">
+                    Previous
+                </button>
+                <button @click="nextPage"
+                    :disabled="currentPage === totalPages"
+                    class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md"
+                    :class="currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'">
+                    Next
+                </button>
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Showing <span class="font-medium">{{ (currentPage - 1) * itemsPerPage + 1 }}</span>
+                        to <span class="font-medium">{{ Math.min(currentPage * itemsPerPage, items.length) }}</span>
+                        of <span class="font-medium">{{ items.length }}</span> results
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        <button @click="prevPage" 
+                            :disabled="currentPage === 1"
+                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium"
+                            :class="currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'">
+                            <span class="sr-only">Previous</span>
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        
+                        <!-- Page numbers -->
+                        <template v-for="page in totalPages" :key="`page-${page}`">
+                            <button @click="goToPage(page)"
+                                :aria-current="page === currentPage ? 'page' : undefined"
+                                class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                                :class="page === currentPage 
+                                    ? 'z-10 bg-primary border-primary text-text-sec' 
+                                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'">
+                                {{ page }}
+                            </button>
+                        </template>
+                        
+                        <button @click="nextPage"
+                            :disabled="currentPage === totalPages"
+                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium"
+                            :class="currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'">
+                            <span class="sr-only">Next</span>
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
 </template>
