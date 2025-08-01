@@ -19,7 +19,7 @@ import GuestLayout from './GuestLayout.vue';
         </Hero>
 
         <section class="intro p-3 relative">
-            <h1 class="title font-bold mb-5 z-[1] text-center m-12 relative text-text-main">
+            <h1 class="text-2xl font-bold mb-5 z-[1] text-center m-12 relative text-text-main">
                 UNESCO Introduction
             </h1>
             <div class="description text-text-main leading-[1.5]">
@@ -37,11 +37,18 @@ import GuestLayout from './GuestLayout.vue';
             </div>
         </section>
 
-        <section class="impact p-3">
-            <h1 class="title font-bold mb-5 z-[1] text-center m-12 relative text-text-main">
-                UNESCO Impact
-            </h1>
-            <TheImpacts />
+        <div class="mx-auto my-5 w-52 border border-b-horizontal-line"></div>
+
+        <section class="impact p-3 text-center">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-center relative text-text-main">
+                    UNESCO Impacts
+                </h1>
+                <RouterLink to="/impacts"
+                    class="border-0 outline-0 shadow-2xl py-3 px-4 m-9 text-center bg-primary text-text-sec z-[1] rounded-[15px] cursor-pointer hover:bg-text-sec hover:text-primary hover:outline-2">
+                    Show more ...</RouterLink>
+            </div>
+            <TheImpacts showLatestOnly />
         </section>
     </GuestLayout>
 </template>
