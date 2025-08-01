@@ -145,8 +145,10 @@ export default {
 
         <Edit v-if="showEditForm" :news="currentNews" @save="handleUpdate" @cancel="closeForms" />
 
-        <Table :headers="['Title', 'Image', 'Date']" :items="news" @edit="handleEdit" @delete="handleDelete"
-            @view="viewDetails" />
+        <Table :headers="['Title', 'Image', 'Date']" :items="news" :filterableColumns="[
+            { key: 'title', label: 'Title' },
+            { key: 'date', label: 'Date', type: 'date' },
+        ]" @edit="handleEdit" @delete="handleDelete" @view="viewDetails" />
 
         <View v-if="viewingNews" :news="viewingNews" @close="closeView" />
 

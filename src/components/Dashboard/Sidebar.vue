@@ -7,7 +7,7 @@ defineProps({
 
 <template>
     <nav :class="{ 'hidden': !isOpen, 'block': isOpen }"
-        class="md:block bg-primary shadow-2xl md:shadow-none md:relative w-3xs absolute flex flex-col justify-between overflow-y-auto">
+        class="lg:block bg-primary shadow-2xl md:shadow-none lg:relative w-3xs absolute flex flex-col justify-between overflow-y-auto">
         <div :class="{ 'hidden': !isOpen, 'block': isOpen }" class="fixed inset-0 bg-black/50"></div>
         <ul>
             <li class="flex items-center relative">

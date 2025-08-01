@@ -137,7 +137,11 @@ export default {
         <Create v-if="showCreateForm" @save="handleCreate" @cancel="closeForms" />
         <Edit v-if="showEditForm" :impact="currentImpact" @save="handleUpdate" @cancel="closeForms" />
         <Table :headers="['Title', 'Image', 'Date']" :items="impacts" @edit="handleEdit" @delete="handleDelete"
-            @view="viewDetails" />
+            @view="viewDetails" :filterableColumns="[
+                { key: 'title', label: 'Title' },
+                { key: 'date', label: 'Date', type: 'date' },
+            ]" />
+
         <View v-if="viewingImpact" :impact="viewingImpact" @close="closeView" />
 
         <ConfirmModal :show="showConfirmModal" :title="confirmModalConfig.title" :message="confirmModalConfig.message"

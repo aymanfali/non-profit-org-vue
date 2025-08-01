@@ -40,7 +40,7 @@ import GuestLayout from './GuestLayout.vue';
         <div class="mx-auto my-5 w-52 border border-b-horizontal-line"></div>
 
         <section class="impact p-3 text-center">
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col md:flex-row justify-between items-center">
                 <h1 class="text-2xl font-bold text-center relative text-text-main">
                     UNESCO Impacts
                 </h1>
