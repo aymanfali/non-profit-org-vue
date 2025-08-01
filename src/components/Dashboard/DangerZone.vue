@@ -7,16 +7,20 @@
                     {{ description }}
                 </p>
             </div>
-            <button @click="handleReset"
-                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors ">
+            <DangerBtn @click="handleReset">
                 {{ buttonText }}
-            </button>
+            </DangerBtn>
         </div>
     </div>
 </template>
 
 <script>
+import DangerBtn from './Buttons/DangerBtn.vue';
+
 export default {
+    components: {
+        DangerBtn
+    },
     props: {
         title: {
             type: String,

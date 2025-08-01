@@ -1,13 +1,14 @@
-<script setup lang="ts">
+<script setup>
 import SearchForm from '../Forms/SearchForm.vue';
 import ThemeToggle from '../ThemeToggle.vue';
 
+defineEmits(['toggle-nav'])
 </script>
 
 <template>
-    <div class="main-nav relative flex justify-between items-center bg-primary text-text-sec shadow-2xl p-6">
+    <div class="main-nav relative flex justify-between items-center z-50 bg-primary text-text-sec shadow-2xl p-6">
         <div class="flex">
-            <button
+            <button @click="$emit('toggle-nav')"
                 class="dash-nav-trigger md:hidden bg-transparent text-2xl mb-2 me-5 text-text-sec cursor-pointer">&equiv;</button>
             <div class="logo">
                 <img class="w-36" loading="lazy" src="/public/images/unesco.svg" alt="unesco_logo">

@@ -1,5 +1,10 @@
 <script>
+import PrimaryBtn from '@/components/Dashboard/Buttons/PrimaryBtn.vue'
+
 export default {
+    components: {
+        PrimaryBtn
+    },
     props: {
         contact: {
             type: Object,
@@ -83,10 +88,7 @@ export default {
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <button @click="$emit('close')"
-                        class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                        Close
-                    </button>
+                    <PrimaryBtn @click="$emit('close')" name="Close"/>
                 </div>
             </div>
         </div>

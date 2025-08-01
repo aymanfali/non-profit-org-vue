@@ -43,7 +43,7 @@ export default {
         <Hero>
             <h1 class="title font-bold mb-5 text-text-sec  z-10">{{ item.title }}</h1>
             <p class="date p-[10px] text-sm text-gray z-[1]">{{ item.date }}</p>
-            <a @click="$router.go(-1)" class="back z-[1] no-underline text-text-sec mt-8">&lArr; Back to news list</a>
+            <a @click="$router.go(-1)" class="back cursor-pointer z-[1] no-underline text-text-sec mt-8">&lArr; Back to news list</a>
         </Hero>
 
         <section class="news-details leading-10 text-justify m-8 text-text-main">

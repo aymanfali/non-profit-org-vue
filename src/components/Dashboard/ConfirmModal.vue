@@ -1,4 +1,7 @@
 <script setup>
+import CancelBtn from './Buttons/CancelBtn.vue';
+import DangerBtn from './Buttons/DangerBtn.vue';
+
 defineProps({
     show: { type: Boolean, required: true },
     title: { type: String, required: true },
@@ -17,14 +20,8 @@ const emit = defineEmits(['confirm', 'cancel']);
             <p class="text-text-main mb-6">{{ message }}</p>
 
             <div class="flex justify-end space-x-3">
-                <button @click="$emit('cancel')"
-                    class="px-4 py-2 border border-gray-300 rounded-m focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                    {{ cancelText }}
-                </button>
-                <button @click="$emit('confirm')"
-                    class="px-4 py-2 bg-danger text-text-sec rounded-md hover:bg-danger/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger/50">
-                    {{ confirmText }}
-                </button>
+                <CancelBtn @click="$emit('cancel')" :name="cancelText"/>
+                <DangerBtn @click="$emit('confirm')">Delete</DangerBtn>
             </div>
         </div>
     </div>

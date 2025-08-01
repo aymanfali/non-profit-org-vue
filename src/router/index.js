@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "@/views/Index.vue";
 import News from "@/views/News.vue";
 import NewsDetails from "@/views/NewsDetails.vue";
@@ -15,7 +15,7 @@ import AdminContacts from "@/views/dashboard/contacts/Index.vue";
 import AdminSettings from "@/views/dashboard/settings/Index.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory("/non-profit-org-vue/"),
   routes: [
     { path: "/", name: "Index", component: Home },
     { path: "/news", name: "News", component: News },
