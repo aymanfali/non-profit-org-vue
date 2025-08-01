@@ -36,30 +36,41 @@ export default {
             <ul
                 class="absolute md:relative flex flex-col md:flex-row gap-5 bg-primary w-full md:w-auto left-0 md:left-auto top-20 md:top-0 z-[1000] shadow-2xl md:shadow-none">
                 <li class="active flex items-center relative">
-                    <RouterLink class="text-text-sec no-underline w-full text-center p-3.5" to="/">Home</RouterLink>
+                    <RouterLink
+                        class="text-text-sec hover:border-b border-text-sec no-underline w-full text-center p-3.5"
+                        to="/" :class="{ 'border-b border-text-sec': $route.path === '/' }">
+                        Home</RouterLink>
                 </li>
                 <li class="flex items-center relative">
-                    <RouterLink class="text-text-sec no-underline w-full text-center p-3.5" to="/impacts">Impacts
+                    <RouterLink
+                        class="text-text-sec hover:border-b border-text-sec transform no-underline w-full text-center p-3.5"
+                        to="/impacts" :class="{ 'border-b border-text-sec': $route.path === '/impacts' }">Impacts
                     </RouterLink>
                 </li>
                 <li class="flex items-center relative">
-                    <RouterLink class="text-text-sec no-underline w-full text-center p-3.5" to="/news">News
+                    <RouterLink
+                        class="text-text-sec hover:border-b border-text-sec transform no-underline w-full text-center p-3.5"
+                        to="/news" :class="{ 'border-b border-text-sec': $route.path === '/news' }">News
                     </RouterLink>
                 </li>
                 <li class="flex items-center relative">
-                    <RouterLink class="text-text-sec no-underline w-full text-center p-3.5" to="/contact-us">
+                    <RouterLink
+                        class="text-text-sec hover:border-b border-text-sec no-underline w-full text-center p-3.5"
+                        to="/contact-us" :class="{ 'border-b border-text-sec': $route.path === '/contact-us' }">
                         Contact
                         Us</RouterLink>
                 </li>
                 <li class="flex items-center relative">
-                    <RouterLink class="text-text-sec no-underline w-full text-center p-3.5" to="/about-us">About
+                    <RouterLink
+                        class="text-text-sec hover:border-b border-text-sec transform no-underline w-full text-center p-3.5"
+                        to="/about-us" :class="{ 'border-b border-text-sec': $route.path === '/about-us' }">About
                         Us</RouterLink>
                 </li>
             </ul>
         </nav>
         <div class="right flex gap-2.5 items-center">
-            <ThemeToggle/>
-            <SearchForm/>
+            <ThemeToggle />
+            <SearchForm />
             <button @click="toggleMobileNav"
                 class="mobile-nav-trigger md:hidden bg-transparent text-2xl mb-2 text-text-sec cursor-pointer">&equiv;</button>
         </div>

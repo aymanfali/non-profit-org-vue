@@ -32,7 +32,7 @@
 
 *{
   scroll-behavior: smooth;
-  transition: 0.5s;
+  transition: 0.3s ease-in-out;
 }
 
 body{
@@ -41,4 +41,8 @@ body{
 
 [class$="-error"] {
 display: none;
+}
+
+.follow-links img, form .icon{
+  filter: brightness(0) saturate(100%) invert(21%) sepia(60%) saturate(5527%) hue-rotate(200deg) brightness(93%) contrast(101%);
 }

@@ -53,11 +53,11 @@ export default {
                 <thead class="">
                     <tr>
                         <th v-for="(header, index) in headers" :key="`header-${index}`"
-                            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                            class="px-6 py-3 text-center text-md font-bold uppercase tracking-wider">
                             {{ header }}
                         </th>
                         <th v-if="showActions"
-                            class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
+                            class="px-6 py-3 text-center text-md font-bold uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
@@ -67,11 +67,11 @@ export default {
                         <template v-for="(header, headerIndex) in headers" :key="`cell-${itemIndex}-${headerIndex}`">
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <template v-if="isImage(item[header.toLowerCase()])">
-                                    <img :src="item[header.toLowerCase()]" class="h-10 w-10 rounded-full object-cover"
+                                    <img :src="item[header.toLowerCase()]" class="h-10 w-10 rounded-full object-cover mx-auto"
                                         :alt="`${header} image`">
                                 </template>
                                 <template v-else-if="header.toLowerCase().includes('date')">
-                                    {{ formatDate(item[header.toLowerCase()]) }}
+                                    <div class="text-center">{{ formatDate(item[header.toLowerCase()]) }}</div>
                                 </template>
                                 <template v-else>
                                     {{ item[header.toLowerCase()] }}
@@ -79,7 +79,7 @@ export default {
                             </td>
                         </template>
 
-                        <td v-if="showActions" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <td v-if="showActions" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                             <button @click="handleView(item)" class="mr-3"
                                 title="View details">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
