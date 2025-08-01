@@ -1,5 +1,10 @@
 <script>
+import PrimaryBtn from './Buttons/PrimaryBtn.vue';
+
 export default {
+    components: {
+        PrimaryBtn
+    },
     props: {
         headers: {
             type: Array,
@@ -20,22 +25,57 @@ export default {
         itemsPerPage: {
             type: Number,
             default: 5
+        },
+        filterableColumns: {
+            type: Array,
+            default: () => []
         }
     },
     data() {
         return {
-            currentPage: 1
+            currentPage: 1,
+            filters: {}
         }
     },
+    created() {
+        // Initialize filters based on filterableColumns
+        this.filterableColumns.forEach(col => {
+            this.filters[col.key] = '';
+        });
+    },
     computed: {
+        filterItems() {
+            return this.items.filter(item => {
+                return this.filterableColumns.every(filterConfig => {
+                    const filterValue = this.filters[filterConfig.key];
+                    if (!filterValue) return true; // No filter applied for this column
+
+                    const itemValue = item[filterConfig.key];
+
+                    if (filterConfig.type === 'date') {
+                        try {
+                            const filteredItem = new Date(itemValue).setHours(0, 0, 0, 0);
+                            const dateFilter = new Date(filterValue).setHours(0, 0, 0, 0);
+                            return filteredItem === dateFilter;
+                        } catch {
+                            return false;
+                        }
+                    } else {
+                        return itemValue &&
+                            itemValue.toString().toLowerCase()
+                                .includes(filterValue.toLowerCase());
+                    }
+                });
+            });
+        },
         totalPages() {
-            return Math.ceil(this.items.length / this.itemsPerPage);
+            return Math.ceil(this.filterItems.length / this.itemsPerPage);
         },
         paginatedItems() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = start + this.itemsPerPage;
-            return this.items.slice(start, end);
-        }
+            return this.filterItems.slice(start, end);
+        },
     },
     methods: {
         handleEdit(item) {
@@ -75,34 +115,61 @@ export default {
             if (this.currentPage > 1) {
                 this.currentPage--;
             }
+        },
+        handleFilter() {
+            this.currentPage = 1;
+        },
+        clearFilters() {
+            Object.keys(this.filters).forEach(key => {
+                this.filters[key] = '';
+            });
+            this.currentPage = 1;
         }
     }
 }
 </script>
 
+
 <template>
-    <div class="rounded-lg shadow overflow-hidden">
+    <div class="rounded-lg shadow overflow-auto">
+        <div class="">
+            <form @submit.prevent="handleFilter" class="md:flex md:flex-wrap">
+                <div v-for="filterConfig in filterableColumns" :key="filterConfig.key" class="m-3">
+                    <label v-if="filterConfig.label" class="block text-sm font-medium text-horizontal-line mb-1">
+                        {{ filterConfig.label }}
+                    </label>
+                    <input v-if="filterConfig.type !== 'date'" type="text" v-model="filters[filterConfig.key]"
+                        :placeholder="`Filter by ${filterConfig.label || filterConfig.key}`"
+                        class="bg-primary/20 py-2 px-3 shadow-sm rounded outline-horizontal-line w-full">
+                    <input v-else type="date" v-model="filters[filterConfig.key]"
+                        :placeholder="`Filter by ${filterConfig.label || filterConfig.key}`"
+                        class="bg-primary/20 py-2 px-3 shadow-sm rounded outline-horizontal-line w-full">
+                </div>
+                <div class="m-1 flex items-end">
+                    <PrimaryBtn type="button" name="Clear" @click="clearFilters" class="ml-2" />
+                </div>
+            </form>
+        </div>
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y">
+            <table class="min-w-full divide-y divide-primary/20">
                 <thead class="">
                     <tr>
                         <th v-for="(header, index) in headers" :key="`header-${index}`"
                             class="px-6 py-3 text-center text-md font-bold uppercase tracking-wider">
                             {{ header }}
                         </th>
-                        <th v-if="showActions"
-                            class="px-6 py-3 text-center text-md font-bold uppercase tracking-wider">
+                        <th v-if="showActions" class="px-6 py-3 text-center text-md font-bold uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y ">
+                <tbody class="divide-y divide-primary/20">
                     <tr v-for="(item, itemIndex) in paginatedItems" :key="`row-${itemIndex}`">
                         <template v-for="(header, headerIndex) in headers" :key="`cell-${itemIndex}-${headerIndex}`">
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <template v-if="isImage(item[header.toLowerCase()])">
-                                    <img :src="item[header.toLowerCase()]" class="h-10 w-10 rounded-full object-cover mx-auto"
-                                        :alt="`${header} image`">
+                                    <img :src="item[header.toLowerCase()]"
+                                        class="h-10 w-10 rounded-full object-cover mx-auto" :alt="`${header} image`">
                                 </template>
                                 <template v-else-if="header.toLowerCase().includes('date')">
                                     <div class="text-center">{{ formatDate(item[header.toLowerCase()]) }}</div>
@@ -114,92 +181,87 @@ export default {
                         </template>
 
                         <td v-if="showActions" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                            <button @click="handleView(item)" class="mr-3"
-                                title="View details">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    <path fill-rule="evenodd"
-                                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                            <button @click="handleView(item)" class="mr-3 cursor-pointer" title="View details">
+                                <span class="material-symbols-rounded">
+                                    visibility
+                                </span>
                             </button>
-                            <button v-if="allowEdit" @click="handleEdit(item)"
-                                class="mr-3" title="Edit">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path
-                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                </svg>
+                            <button v-if="allowEdit" @click="handleEdit(item)" class="mr-3 cursor-pointer" title="Edit">
+                                <span class="material-symbols-rounded">
+                                    edit
+                                </span>
                             </button>
-                            <button @click="handleDelete(item)" class="text-red-600 hover:text-red-900" title="Delete">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                            <button @click="handleDelete(item)" class="cursor-pointer text-red-600 hover:text-red-900" title="Delete">
+                                <span class="material-symbols-rounded">
+                                    delete
+                                </span>
                             </button>
+                        </td>
+                    </tr>
+                    <tr v-if="filterItems.length === 0">
+                        <td :colspan="headers.length + (showActions ? 1 : 0)" class="px-6 py-4 text-center">
+                            No items found matching your filters
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div class="bg-bg px-4 py-3 flex items-center justify-between border-t border-primary/20 sm:px-6">
             <div class="flex-1 flex justify-between sm:hidden">
-                <button @click="prevPage" 
-                    :disabled="currentPage === 1"
+                <button @click="prevPage" :disabled="currentPage === 1"
                     class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md"
-                    :class="currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'">
+                    :class="currentPage === 1 ? 'bg-gray-100 text-gray-400' : 'bg-white text-horizontal-line hover:bg-gray-50'">
                     Previous
                 </button>
-                <button @click="nextPage"
-                    :disabled="currentPage === totalPages"
+                <button @click="nextPage" :disabled="currentPage === totalPages"
                     class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md"
-                    :class="currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-gray-700 hover:bg-gray-50'">
+                    :class="currentPage === totalPages ? 'bg-gray-100 text-gray-400' : 'bg-white text-horizontal-line hover:bg-gray-50'">
                     Next
                 </button>
             </div>
             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <p class="text-sm text-gray-700">
+                    <p class="text-sm text-horizontal-line">
                         Showing <span class="font-medium">{{ (currentPage - 1) * itemsPerPage + 1 }}</span>
-                        to <span class="font-medium">{{ Math.min(currentPage * itemsPerPage, items.length) }}</span>
-                        of <span class="font-medium">{{ items.length }}</span> results
+                        to <span class="font-medium">{{ Math.min(currentPage * itemsPerPage, filterItems.length)
+                            }}</span>
+                        of <span class="font-medium">{{ filterItems.length }}</span> results
                     </p>
                 </div>
                 <div>
                     <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                        <button @click="prevPage" 
-                            :disabled="currentPage === 1"
+                        <button @click="prevPage" :disabled="currentPage === 1"
                             class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium"
                             :class="currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'">
                             <span class="sr-only">Previous</span>
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </button>
-                        
+
                         <!-- Page numbers -->
                         <template v-for="page in totalPages" :key="`page-${page}`">
-                            <button @click="goToPage(page)"
-                                :aria-current="page === currentPage ? 'page' : undefined"
-                                class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                                :class="page === currentPage 
-                                    ? 'z-10 bg-primary border-primary text-text-sec' 
+                            <button @click="goToPage(page)" :aria-current="page === currentPage ? 'page' : undefined"
+                                class="relative inline-flex items-center px-4 py-2 border text-sm font-medium" :class="page === currentPage
+                                    ? 'z-10 bg-primary border-primary text-text-sec'
                                     : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'">
                                 {{ page }}
                             </button>
                         </template>
-                        
-                        <button @click="nextPage"
-                            :disabled="currentPage === totalPages"
+
+                        <button @click="nextPage" :disabled="currentPage === totalPages"
                             class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium"
                             :class="currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'">
                             <span class="sr-only">Next</span>
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </button>
                     </nav>

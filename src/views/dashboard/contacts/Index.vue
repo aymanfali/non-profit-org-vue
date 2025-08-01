@@ -73,8 +73,8 @@ export default {
         },
         handleConfirm() {
             try {
-                    this.contacts = this.contacts.filter(c => c.id !== this.contactToDelete.id);
-                    this.saveContacts();
+                this.contacts = this.contacts.filter(c => c.id !== this.contactToDelete.id);
+                this.saveContacts();
                 this.toast.success('Contact deleted successfully');
 
                 this.showConfirmModal = false;
@@ -105,7 +105,13 @@ export default {
         </div>
 
         <Table :headers="['Name', 'Email', 'Subject', 'Date']" :items="contacts" :allow-edit="false"
-            @delete="handleDelete" @view="viewDetails" />
+            @delete="handleDelete" @view="viewDetails" :filterableColumns="[
+                { key: 'name', label: 'Name' },
+                { key: 'email', label: 'Email' },
+                { key: 'subject', label: 'Subject' },
+                { key: 'date', label: 'Date', type: 'date' },
+
+            ]" />
 
         <View v-if="viewingContact" :contact="viewingContact" @close="closeView" />
 
