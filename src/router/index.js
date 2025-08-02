@@ -15,7 +15,7 @@ import AdminContacts from "@/views/dashboard/contacts/Index.vue";
 import AdminSettings from "@/views/dashboard/settings/Index.vue";
 
 const router = createRouter({
-  history: createWebHashHistory("/non-profit-org-vue-live/"),
+  history: createWebHashHistory("/non-profit-org-vue/"),
   routes: [
     { path: "/", name: "Index", component: Home },
     { path: "/news", name: "News", component: News },
