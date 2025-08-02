@@ -31,7 +31,7 @@ export default {
 
 
 <template>
-    <label class="theme-switch relative inline-block w-7 h-7  cursor-pointer">
+    <label class="theme-switch relative inline-block w-5 h-5  cursor-pointer">
         <input v-model="isDark" @change="toggleTheme" type="checkbox" id="theme-toggle" class="opacity-0 w-0 h-0">
         <span class="slider absolute inset-0">
             <img class="icon sun-icon absolute w-4 h-4 top-1/2 -translate-y-1/2 z-10 left-0 opacity-100 dark:opacity-0"
