@@ -200,7 +200,7 @@ export default {
                     </tr>
                     <tr v-if="filterItems.length === 0">
                         <td :colspan="headers.length + (showActions ? 1 : 0)" class="px-6 py-4 text-center">
-                            No items found matching your filters
+                            No items found
                         </td>
                     </tr>
                 </tbody>
