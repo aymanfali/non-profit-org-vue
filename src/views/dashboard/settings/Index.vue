@@ -27,6 +27,15 @@ const resetSiteData = () => {
     }
 };
 
+const clearUsersData = () => {
+    try {
+        localStorage.removeItem('users');
+        toast.success('Users data has been deleted successfully!');
+    } catch (error) {
+        toast.error('Failed deleting Users data');
+    }
+};
+
 const clearNewsData = () => {
     try {
         localStorage.removeItem('news');
@@ -86,6 +95,13 @@ const executeConfirmedAction = () => {
                     'This will permanently delete ALL locally stored data. This action cannot be undone.',
                     resetSiteData,
                     'Reset All Data'
+                )" />
+
+            <DangerZone title="Delete Users Data" description="This will clear all locally stored Users data."
+                buttonText="Clear Users Data" @reset="confirmAction(
+                    'Delete All Users Data?',
+                    'This will permanently delete all Users data. This action cannot be undone.',
+                    clearUsersData
                 )" />
 
             <DangerZone title="Delete News Data" description="This will clear all locally stored news data."
