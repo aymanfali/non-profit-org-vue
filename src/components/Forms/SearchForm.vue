@@ -101,21 +101,20 @@ export default {
                 placeholder="What are you looking for?">
         </form>
         <div v-if="isResultListOpen"
-            class="absolute justify-center left-0 w-full top-52 z-50 p-5 my-3 mx-0 bg-bg text-text-main shadow-2xl">
+            class="absolute justify-center left-0 w-full h-96 overflow-y-scroll top-52 z-50 p-5 my-3 mx-0 bg-bg text-text-main shadow-2xl cursor-pointer">
             <div v-if="isLoading" class="p-3 text-center text-gray-500">
                 Searching...
             </div>
             <div v-else-if="searchResults.length > 0" class="search-results">
                 <div v-for="(result, index) in searchResults" :key="index"
-                    class="result-item p-3 border-b border-gray-200" @click="navigateToResult(result)">
-                    <div class="result-type text-xs font-semibold mb-1"
-                        :class="{ 'text-blue-500': result.type === 'impact', 'text-green-500': result.type === 'news' }">
+                    class="result-item p-3 border-b border-gray/30 hover:bg-gray/10" @click="navigateToResult(result)">
+                    <div class="result-type text-xs font-semibold mb-1 bg-primary/20 border border-horizontal-line/30 text-horizontal-line p-1 rounded-lg w-fit">
                         {{ result.type.toUpperCase() }}
                     </div>
                     <div class="result-content">
                         {{ result.title }}
                     </div>
-                    <div class="result-content" v-on:click="">
+                    <div class="result-content">
                         {{ result.content ? result.content.substring(0, 10) + (result.content.length > 10 ? '...' : '')
                         : 'No content' }}
                     </div>
@@ -133,7 +132,4 @@ export default {
     transition: background-color 0.2s;
 }
 
-.result-item:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
 </style>

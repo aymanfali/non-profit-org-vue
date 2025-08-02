@@ -20,6 +20,15 @@ defineProps({
                 </RouterLink>
             </li>
             <li class="flex items-center relative">
+                <RouterLink class="hover:bg-bg hover:text-text-main no-underline w-full flex px-7 py-4" to="/dashboard/users"
+                    :class="{ 'rounded-l-md bg-bg text-text-main font-bold ms-2': $route.path === '/dashboard/users', 'text-text-sec': $route.path !== '/dashboard/users' }">
+                    <span class="material-symbols-rounded me-2">
+                        account_circle
+                    </span>
+                    Users
+                </RouterLink>
+            </li>
+            <li class="flex items-center relative">
                 <RouterLink class="hover:bg-bg hover:text-text-main no-underline w-full flex  px-7 py-4"
                     to="/dashboard/impacts"
                     :class="{ 'rounded-l-md bg-bg text-text-main font-bold ms-2': $route.path === '/dashboard/impacts', 'text-text-sec': $route.path !== '/dashboard/impacts' }">
