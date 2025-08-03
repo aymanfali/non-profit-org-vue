@@ -14,8 +14,8 @@ export default {
     },
     data() {
         return {
-            email: '',
-            password: '',
+            email: 'admin@me.com',
+            password: '000000',
             showPassword: false // Add this new data property
         }
     },
