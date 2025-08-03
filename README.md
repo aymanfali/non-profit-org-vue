@@ -6,6 +6,10 @@ you can find the website hosted on GitHub.io by visiting https://aymanfali.githu
 # dashboard link
 you can find the dashboard hosted on GitHub.io by visiting https://aymanfali.github.io/non-profit-org-vue-live/#/dashboard
 
+# dashboard login default creds
+email: admin@me.com
+password: 000000
+
 <hr>
 
 This template should help get you started developing with Vue 3 in Vite.
